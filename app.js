@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 var cors=require('cors')
 const sequelize = require('./util/database');
 const User = require('./models/users');
+const Expense=require('./models/expenses')
 const bcrypt=require('bcrypt')
 const app = express();
 app.use(cors())
@@ -34,16 +35,7 @@ app.post('/user/signup',async(req,res,next)=>{
         res.status(500).json(err)
     }}
 })
-// app.get('/user/getelement',async(req,res,next)=>{
-//     User.findAll()
-//     .then(
-//         data=>{
-//             res.json(data)
-//         }
-//     )
-    
-   
-// })
+
 app.post('/user/login',async(req,res,next)=>{
     try{
     const{email,password}=req.body;
@@ -72,21 +64,44 @@ app.post('/user/login',async(req,res,next)=>{
         res.status(500).json({message:err,success:false})
     }}
 })
-// app.get('/user/getelement',async(req,res)=>{
-//     User.findAll({where:5}).then(user=>{
-//         console.log(user)
-//         const name="ghgf"
-//         // res.json(user)
-//     //    if(user[0].name===name){
-//     //     res.json({success:true})
-//     //    }
-//     console.log(user[0].id)
-//         if(user[0].name===name){
-//             // console.log('true')
-//             res.json({name})
-//         }
-//     })
-// })
+
+app.post('/expense/addexpense',async(req,res,next)=>{
+    try{
+    const{expenseamount,description,category}=req.body;
+    if(isstringinvalid(expenseamount) || isstringinvalid(description) || isstringinvalid(category)){
+        return res.status(400).json({success:false,message:'parameter is missing'})
+    }
+    await Expense.create({expenseamount,description,category})
+    .then(expense=>{
+        return res.status(201).json({expense,success:true})
+    })
+}
+    catch{err=>{
+        return res.status(500).json({success:false,error:err})
+    }
+}
+
+})
+app.get('/expense/getexpenses',async(req,res,next)=>{
+    Expense.findAll().then(expenses=>{
+        res.status(200).json({expenses,success:true})
+    })
+    .catch(err=>{
+        res.status(500).json({error:err,success:false})
+    })
+})
+app.delete('/expense/deleteexpense/:expenseid',async(req,res,next)=>{
+    const expenseid=req.params.expenseid;
+    if(isstringinvalid(expenseid)){
+       return res.status(400).json({success:false,message:'bad parameter'})
+    }
+    Expense.destroy({where:{id:expenseid}}).then(()=>{
+        return res.status(200).json({success:true,message:'Deleted successfully'})
+    })
+    .catch(err=>{
+        return res.status(500).json({success:false,message:"failed"})
+    })
+})
 sequelize
   .sync()
   .then(result => {
