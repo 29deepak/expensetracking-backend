@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const helmet=require('helmet')
 const dotenv = require('dotenv');
 dotenv.config();
 const bodyParser = require('body-parser');
@@ -24,6 +25,7 @@ const AWS=require('aws-sdk')
 const Filelink=require('./models/filelink')
 
 const app = express();
+app.use(helmet())
 app.use(cors())
 app.use(bodyParser.json());
 app.use(UserRoutes)
