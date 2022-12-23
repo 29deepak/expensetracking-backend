@@ -1,16 +1,18 @@
 const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
-const Order=sequelize.define('order',{
+
+const Filelink = sequelize.define('filelink',{
     id:{
         type:Sequelize.INTEGER,
         autoIncrement:true,
-        autoNull:false,
+        allowNull:false,
         primaryKey:true
     },
-    paymentid:Sequelize.STRING,
-    orderid:Sequelize.STRING,
-    status:Sequelize.STRING,
+    fileURl:{
+        type:Sequelize.STRING,
+        allowNull:false
+    }
+    
 })
-
-module.exports=Order
+module.exports=Filelink;
