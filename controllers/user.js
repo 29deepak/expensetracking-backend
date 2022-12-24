@@ -55,6 +55,9 @@ exports.postSignup=async(req,res,next)=>{
     if(isstringinvalid(name) || isstringinvalid(email) || isstringinvalid(password)){
         res.status(400).json({err:'bad parameter....something went wrong'})
     }
+    const existinguser=User.findOne({email})
+    if(existinguser) return res.status(400).json('user already exists')
+    
     const saltrounds=10
     bcrypt.hash(password,saltrounds,async(err,hash)=>{
         await User.create({name,email,password:hash})
@@ -64,7 +67,7 @@ exports.postSignup=async(req,res,next)=>{
 
 }
     catch{(err)=>{
-        res.status(500).json(err)
+        return res.status(500).json(err)
     }}
 }
 exports.postLogin=async(req,res,next)=>{

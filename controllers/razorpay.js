@@ -3,7 +3,7 @@ const Razorpay=require('razorpay')
 const Order=require('../models/orders');
 const User = require('../models/users');
 function generateAccessToken(id,name,ispremiumuser){
-    return jwt.sign({userId:id,name:name,ispremiumuser:ispremiumuser},'secretkeyorbigggervalue')
+    return jwt.sign({userId:id,name:name,ispremiumuser:ispremiumuser},process.env.TOKEN)
 
 }
 exports.getPurchase=async(req,res)=>{
