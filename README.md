@@ -26,7 +26,6 @@
 <h6 align="center> benefits of the premium user </h6><br>
 <h6 align="center> user can download the expense which store in the database. </h6><br>
 <h6 align="center>user can  check which user expends is more on the daily basis.</h6><br>
-<h3 align="center> LEADERBOARD AND DOWNLOAD FILES</h3>
 <img src="https://github.com/29deepak/expensetracking-backend/blob/master/higher%20expense%20uses.png" /><br>
 
 
